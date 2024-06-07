@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"io"
+	"html/template"
 )
 
 var port = os.Getenv("PORT")
@@ -23,11 +24,23 @@ func HelloServer(w http.ResponseWriter, r *http.Request) {
 	if path != "" {
 		fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
 	} else {
-		fmt.Fprint(w, "Hello World!<br/>"+
-		"<form action='/upload' method='post' enctype='multipart/form-data'>"+
-		"<input type='file' name='file' accept='.txt'>"+
-		"<input type='submit' value='Upload'>"+
-		"</form>")
+		tmpl := `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>File Upload</title>
+        </head>
+        <body>
+            <h1>Upload a File</h1>
+            <form method="post" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <input type="submit" value="Upload">
+            </form>
+        </body>
+        </html>
+        `
+        t, _ := template.New("upload").Parse(tmpl)
+        t.Execute(w, nil)		
 	}
 }
 
