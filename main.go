@@ -22,9 +22,11 @@ func HelloServer(w http.ResponseWriter, r *http.Request) {
 	if path != "" {
 		fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
 	} else {
-		fmt.Fprint(w, "Hello World!<br/><form action='/upload' method='post' enctype='multipart/form-data'>
-        <input type='file' name='file' accept='.txt'>
-        <input type='submit' value='Upload'>")
+		fmt.Fprint(w, "Hello World!<br/>"+
+		"<form action='/upload' method='post' enctype='multipart/form-data'>"+
+		"<input type='file' name='file' accept='.txt'>"+
+		"<input type='submit' value='Upload'>"+
+		"</form>")
 	}
 }
 
