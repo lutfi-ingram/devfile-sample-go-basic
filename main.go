@@ -54,11 +54,11 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		defer file.Close()
 
 		// Create a new file in the specified directory
-		uploadPath := "/usr/share/external_persistent"
+		uploadPath := "/usr/share/external_persistent/"
 		filename := "uploaded_file.txt"
 		dst, err := os.Create(uploadPath + filename)
 		if err != nil {
-			http.Error(w, "Error creating file", http.StatusInternalServerError)
+			http.Error(w, "Error creating file on server: " + err.Error(), http.StatusInternalServerError)
 			return
 		}
 		defer dst.Close()
@@ -66,7 +66,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		// Copy the uploaded file content to the new file
 		_, err = io.Copy(dst, file)
 		if err != nil {
-			http.Error(w, "Error saving file", http.StatusInternalServerError)
+			http.Error(w, "Error saving file " + filename+" on server: " + err.Error(), http.StatusInternalServerError)
 			return
 		}
 
